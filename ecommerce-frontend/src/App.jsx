@@ -10,7 +10,7 @@ function App() {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/cart-items").then((response) => {
+    axios.get("/api/cart-items?expand=product").then((response) => { //?expand=product is query parameter add additional info to the request
       setCart(response.data);
     });
   }, []);
