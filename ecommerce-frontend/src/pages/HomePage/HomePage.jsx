@@ -1,12 +1,11 @@
 import axios from "axios";
 import { Header } from "../../components/Header";
 import "./HomePage.css";
-import {formatMoney} from '../../utils/money'
+import { formatMoney } from "../../utils/money";
 import { useEffect, useState } from "react";
 
-export function HomePage({cart}) {
-  const [products, setProducts] = useState([])
-  
+export function HomePage({ cart }) {
+  const [products, setProducts] = useState([]);
 
   // fetch('http://localhost:3000/api/products').then((response) => {
   //   response.json().then((data) => {
@@ -15,17 +14,17 @@ export function HomePage({cart}) {
   // })
 
   useEffect(() => {
-    axios.get("/api/products").then((response) => {
+    const getHomeData = async () => {
+      const response = await axios.get("/api/products");
       setProducts(response.data);
-    });
-
-    
+    };
+    getHomeData() 
   }, []);
 
   return (
     <>
       <title>Ecommerce Project</title>
-      <Header cart={cart}/>
+      <Header cart={cart} />
       <div className="home-page">
         <div className="products-grid">
           {products.map((product) => {
