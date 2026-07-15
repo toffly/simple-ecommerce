@@ -6,7 +6,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-export function CheckoutPage({ cart }) {
+export function CheckoutPage({ cart, loadCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState("");
 
@@ -21,7 +21,7 @@ export function CheckoutPage({ cart }) {
       setPaymentSummary(response.data);
     };
     fetchCheckoutData();
-  }, []);
+  }, [cart]);
 
   return (
     <>
@@ -114,6 +114,15 @@ export function CheckoutPage({ cart }) {
                             <div
                               key={deliveryOption.id}
                               className="delivery-option"
+                              onClick={async () => {
+                                await axios.put(
+                                  `/api/cart-items/${cartItem.productId}`,
+                                  {
+                                    deliveryOptionId: deliveryOption.id,
+                                  },
+                                );
+                                await loadCart()
+                              }}
                             >
                               <input
                                 type="radio"
@@ -121,6 +130,7 @@ export function CheckoutPage({ cart }) {
                                   deliveryOption.id ===
                                   cartItem.deliveryOptionId
                                 }
+                                onChange={() => {}}
                                 className="delivery-option-input"
                                 name={`delivery-option-${cartItem.productId}`}
                               />
